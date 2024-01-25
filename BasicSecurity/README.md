@@ -7,7 +7,7 @@
 - [x] 1 프로젝트 구성 및 의존성 추가
 - [x] 2 사용자 정의 보안 기능 구현
 - [x] 3 Form Login 인증
-- [ ] 4 Form Login 인증 필터 : UsernamePasswordAuthenticationFilter
+- [x] 4 Form Login 인증 필터 : UsernamePasswordAuthenticationFilter
 - [ ] 5 Logout 처리, LogoutFilter
 - [ ] 6 Remember Me 인증
 - [ ] 7 Remember Me 인증 필터 : RememberMeAuthenticationFilter
