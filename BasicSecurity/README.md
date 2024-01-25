@@ -15,7 +15,7 @@
 - [x] 9 동시 세션 제어, 세션 고정 보호, 세션 정책
 - [x] 10 세션 제어 필터 : SessionManagementFilter, ConcurrentSessionFilter
 - [x] 11 권한설정과 표현식
-- [ ] 12 예외 처리 및 요청 캐시 필터 : ExceptionTranslationFilter, RequestCacheAwareFilter
+- [x] 12 예외 처리 및 요청 캐시 필터 : ExceptionTranslationFilter, RequestCacheAwareFilter
 - [ ] 13 사이트 간 요청 위조 - CSRF, CsrfFilter
 
 #### 섹션 2
