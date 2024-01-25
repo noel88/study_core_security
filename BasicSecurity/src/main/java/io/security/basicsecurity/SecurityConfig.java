@@ -1,11 +1,13 @@
 package io.security.basicsecurity;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -20,6 +22,9 @@ import java.io.IOException;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -69,5 +74,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         response.sendRedirect("/login");
                     }
                 });
+
+        http
+                .rememberMe()
+                .rememberMeParameter("remember") //기본 파라메터는 remember-me
+                .tokenValiditySeconds(3600) //Default 14일, 만료계정
+//                .alwaysRemember(true) //리멤버 미 기능이 활성화되지 않아도 항상 실행
+                .userDetailsService(userDetailsService);
     }
 }

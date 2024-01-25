@@ -9,7 +9,7 @@
 - [x] 3 Form Login 인증
 - [x] 4 Form Login 인증 필터 : UsernamePasswordAuthenticationFilter
 - [x] 5 Logout 처리, LogoutFilter
-- [ ] 6 Remember Me 인증
+- [x] 6 Remember Me 인증
 - [ ] 7 Remember Me 인증 필터 : RememberMeAuthenticationFilter
 - [ ] 8 익명사용자 인증 필터 : AnonymousAuthenticationFilter
 - [ ] 9 동시 세션 제어, 세션 고정 보호, 세션 정책
