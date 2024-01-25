@@ -12,7 +12,7 @@
 - [x] 6 Remember Me 인증
 - [x] 7 Remember Me 인증 필터 : RememberMeAuthenticationFilter
 - [x] 8 익명사용자 인증 필터 : AnonymousAuthenticationFilter
-- [ ] 9 동시 세션 제어, 세션 고정 보호, 세션 정책
+- [x] 9 동시 세션 제어, 세션 고정 보호, 세션 정책
 - [ ] 10 세션 제어 필터 : SessionManagementFilter, ConcurrentSessionFilter
 - [ ] 11권한설정과 표현식
 - [ ] 12 예외 처리 및 요청 캐시 필터 : ExceptionTranslationFilter, RequestCacheAwareFilter
