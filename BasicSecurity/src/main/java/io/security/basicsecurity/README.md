@@ -29,3 +29,20 @@ Authentication authentication = SecurityContextHolder.getContext().getAuthentica
   - MODE_INHERITABLEDTHREADLOCAL: 메인 스레드와 자식 스레드에 관하여 동일한 SecurityContext를 유지
   - MODE_GLOBAL: 응용 프로그램에서 단 하나의 SecurityContext를 저장한
 - SecurityContextHolder.clearContext() : SecurityContext 정보 초기화
+
+
+### SecurityContextPersistenceFilter
+#### securityContext 객체의 생성, 저장, 조회
+- 익명 사용자
+  - 새로운 SecurityContext 객체에 생성하여 securityContextHolder에 저장
+  - AnonymousAuthenticationFilter에서 AnonymousAuthenticationToken 객체를 SecurityContext 에 저장
+- 인증 시
+  - 새로운 SecurityContext 객체를 생성하여 securityContextHolder에 저장
+  - UsernamePasswordAuthenticationFilter(FormLogin) 에서 인증 성공 후 SecurityContext에 UsernamePasswordAuthenticationToken 객체를 SecurityContext에 저장
+  - 인증이 최종 완료되면 Session에 SecurityContext를 저장
+- 인증 후
+  - Session 에서 SecurityContext에 꺼내어 SecurityContextHolder에서 저장
+  - SecurityContext 안에 Authentication 객체가 존재하면 계속 인증을 유지한다.
+- 최종 응답 시 공통
+  - SecurityContextHolder.clearContext()를 이용하여 제거한다.
+  - 매 요청마다 저장하므로 제거하고 저장한다.

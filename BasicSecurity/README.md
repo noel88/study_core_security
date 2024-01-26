@@ -24,7 +24,7 @@
 - [x] 2 필터 초기화와 다중 보안 설정
 - [x] 3 인증 개념 이해 - Authentication
 - [x] 4 인증 저장소 - SecurityContextHolder, SecurityContext 
-- [ ] 5 인증 저장소 필터 - SecurityContextPersistenceFilter
+- [x] 5 인증 저장소 필터 - SecurityContextPersistenceFilter
 - [ ] 6 인증 흐름 이해 - Authentication Flow
 - [ ] 7 인증 관리자 : AuthenticationManager
 - [ ] 8인증 처리자 - AuthenticationProvider 
