@@ -20,8 +20,8 @@
 
 #### 섹션 2
 
-- [ ] 1 위임 필터 및 필터 빈 초기화 - DelegatingProxyChain, FilterChainProxy
-- [ ] 2 필터 초기화와 다중 보안 설정
+- [x] 1 위임 필터 및 필터 빈 초기화 - DelegatingProxyChain, FilterChainProxy
+- [x] 2 필터 초기화와 다중 보안 설정
 - [ ] 3 인증 개념 이해 - Authentication
 - [ ] 4 인증 저장소 - SecurityContextHolder, SecurityContext 
 - [ ] 5 인증 저장소 필터 - SecurityContextPersistenceFilter
