@@ -46,3 +46,7 @@ Authentication authentication = SecurityContextHolder.getContext().getAuthentica
 - 최종 응답 시 공통
   - SecurityContextHolder.clearContext()를 이용하여 제거한다.
   - 매 요청마다 저장하므로 제거하고 저장한다.
+
+
+### Authentication Flow
+![flow.jpg](flow.jpg)
