@@ -29,7 +29,7 @@
 - [x] 7 인증 관리자 : AuthenticationManager
 - [x] 8인증 처리자 - AuthenticationProvider 
 - [x] 9 인가 개념 및 필터 이해 : Authorization, FilterSecurityInterceptor
-- [ ] 10 인가 결정 심의자 - AccessDecisionManager, AccessDecisionVoter 
+- [x] 10 인가 결정 심의자 - AccessDecisionManager, AccessDecisionVoter 
 - [ ] 11 스프링 시큐리티 필터 및 아키텍처 정리
 
 #### 섹션 3
