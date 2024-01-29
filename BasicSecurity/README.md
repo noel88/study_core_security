@@ -1,89 +1,95 @@
-# study_core_spring_security
-## 인프런 Core Spring Security를 보고 예제 실습을 합니다
+### Authentication
+- 사용자의 인증 정보를 저장하는 토큰개념.
+- 인증 시 id와 password를 담고 인증 검증을 위해 전달되어야 한다.
+- 인증 후 최종 인증결과 (user, 권한정보)를 담고 SecurityContext에 저장되어 전역적으로 참조가 가능하다.
+
+```java
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+```
+
+#### 구조
+1. principal: 사용자 아이디 혹은 User 객체를 저장
+2. credentials: 사용자 비밀번호
+3. authorities: 인증된 사용자의 권한 목록
+4. details: 인증 부가 정보
+5. authenticated: 인증 여부
 
 
-##### 섹션 1
+### SecurityContext
+- Authentication 객체가 저장되는 보관소로 필요 시 언제든지 Authentication 객체를 꺼내어 쓸 수 있도록 제공되는 클래스
+- ThreadLocal에 저장되어 아무 곳에서나 참조가 가능하도록 설계
+- 인증이 완료되면 HttpSession에 저장되어 어플리케이션 전반에 걸처 전역적인 참조가 가능
 
-- [x] 1 프로젝트 구성 및 의존성 추가
-- [x] 2 사용자 정의 보안 기능 구현
-- [x] 3 Form Login 인증
-- [x] 4 Form Login 인증 필터 : UsernamePasswordAuthenticationFilter
-- [x] 5 Logout 처리, LogoutFilter
-- [x] 6 Remember Me 인증
-- [x] 7 Remember Me 인증 필터 : RememberMeAuthenticationFilter
-- [x] 8 익명사용자 인증 필터 : AnonymousAuthenticationFilter
-- [x] 9 동시 세션 제어, 세션 고정 보호, 세션 정책
-- [x] 10 세션 제어 필터 : SessionManagementFilter, ConcurrentSessionFilter
-- [x] 11 권한설정과 표현식
-- [x] 12 예외 처리 및 요청 캐시 필터 : ExceptionTranslationFilter, RequestCacheAwareFilter
-- [x] 13 사이트 간 요청 위조 - CSRF, CsrfFilter
-
-#### 섹션 2
-
-- [x] 1 위임 필터 및 필터 빈 초기화 - DelegatingProxyChain, FilterChainProxy
-- [x] 2 필터 초기화와 다중 보안 설정
-- [x] 3 인증 개념 이해 - Authentication
-- [x] 4 인증 저장소 - SecurityContextHolder, SecurityContext 
-- [x] 5 인증 저장소 필터 - SecurityContextPersistenceFilter
-- [x] 6 인증 흐름 이해 - Authentication Flow
-- [x] 7 인증 관리자 : AuthenticationManager
-- [x] 8인증 처리자 - AuthenticationProvider 
-- [x] 9 인가 개념 및 필터 이해 : Authorization, FilterSecurityInterceptor
-- [x] 10 인가 결정 심의자 - AccessDecisionManager, AccessDecisionVoter 
-- [ ] 11 스프링 시큐리티 필터 및 아키텍처 정리
-
-#### 섹션 3
-
-- [ ] 1 실전 프로젝트 생성
-- [ ] 2 정적 자원 관리 - WebIgnore 설정
-- [ ] 3 사용자 DB 등록 및 PasswordEncoder
-- [ ] 4 DB 연동 인증 처리(1) : CustomUserDetailsService
-- [ ] 5 DB 연동 인증 처리(2) : CustomAuthenticationProvider
-- [ ] 6 커스텀 로그인 페이지 생성하기
-- [ ] 7 로그아웃 및 인증에 따른 화면 보안 처리
-- [ ] 8 인증 부가 기능 - WebAuthenticationDetails, AuthenticationDetailsSource
-- [ ] 9 인증 성공 핸들러 : CustomAuthenticationSuccessHandler
-- [ ] 10 인증 실패 핸들러 : CustomAuthenticationFailureHandler
-- [ ] 11 인증 거부 처리 - Access Denied
-
-#### 섹션 4
-
-- [ ] 1 흐름 및 개요
-- [ ] 2 인증 필터 - AjaxAuthenticationFilter
-- [ ] 3 인증 처리자 - AjaxAuthenticationProvider
-- [ ] 4 인증 핸들러 - AjaxAuthenticationSuccessHandler, AjaxAuthenticationFailureHandler
-- [ ] 5 인증 및 인가 예외 처리 - AjaxLoginUrlAuthenticationEntryPoint, AjaxAccessDeniedHandler
-- [ ] 6 Ajax Custom DSLs 구현하기
-- [ ] 7 Ajax 로그인 구현 & CSRF 설정
+### SecurityContextHolder
+- SecurityContext 객체 저장 방식
+  - MODE_THREADLOCAL: 스레드당 SecurityContext 객체를 할당, 기본값
+  - MODE_INHERITABLEDTHREADLOCAL: 메인 스레드와 자식 스레드에 관하여 동일한 SecurityContext를 유지
+  - MODE_GLOBAL: 응용 프로그램에서 단 하나의 SecurityContext를 저장한
+- SecurityContextHolder.clearContext() : SecurityContext 정보 초기화
 
 
-#### 섹션 5
+### SecurityContextPersistenceFilter
+#### securityContext 객체의 생성, 저장, 조회
+- 익명 사용자
+  - 새로운 SecurityContext 객체에 생성하여 securityContextHolder에 저장
+  - AnonymousAuthenticationFilter에서 AnonymousAuthenticationToken 객체를 SecurityContext 에 저장
+- 인증 시
+  - 새로운 SecurityContext 객체를 생성하여 securityContextHolder에 저장
+  - UsernamePasswordAuthenticationFilter(FormLogin) 에서 인증 성공 후 SecurityContext에 UsernamePasswordAuthenticationToken 객체를 SecurityContext에 저장
+  - 인증이 최종 완료되면 Session에 SecurityContext를 저장
+- 인증 후
+  - Session 에서 SecurityContext에 꺼내어 SecurityContextHolder에서 저장
+  - SecurityContext 안에 Authentication 객체가 존재하면 계속 인증을 유지한다.
+- 최종 응답 시 공통
+  - SecurityContextHolder.clearContext()를 이용하여 제거한다.
+  - 매 요청마다 저장하므로 제거하고 저장한다.
 
-- [ ] 1 스프링 시큐리티 인가 개요
-- [ ] 2 관리자 시스템 - 권한 도메인, 서비스, 리포지토리 구성
-- [ ] 3 웹 기반 인가처리 DB 연동 - 주요 아키텍처 이해
-- [ ] 4 웹 기반 인가처리 DB 연동 - FilterInvocationSecurityMetadataSource (1)
-- [ ] 5 웹 기반 인가처리 DB 연동 - FilterInvocationSecurityMetadataSource (2)
-- [ ] 6 웹 기반 인가처리 실시간 반영하기
-- [ ] 7 인가처리 허용 필터 - PermitAllFilter 구현
-- [ ] 8 계층 권한 적용하기- RoleHierarchy
-- [ ] 9 아이피 접속 제한하기 - CustomIpAddressVoter
 
-#### 섹션 6
+### Authentication Flow
+![flow.jpg](src/main/java/io/security/basicsecurity/flow.jpg)
+### AuthenticationManager
+- AuthenticationProvider 목록 중에서 인증 처리 요건에 맞는 AuthenticationProvider를 찾아 인증처리를 위임한다.
+- 부모 ProviderManager를 설정하여 AuthencationProvider를 계속 탐색할 수 있다.
 
-- [ ] 1 Method 방식 개요
-- [ ] 2 어노테이션 권한 설정 - @PreAuthorize, @PostAuthorize, @Secured, @RolesAllowed
-- [ ] 3 AOP Method 기반 DB 연동 - 주요 아키텍처 이해
-- [ ] 4 AOP Method 기반 DB 연동 - MapBasedSecurityMetadataSource (1)
-- [ ] 5 AOP Method 기반 DB 연동 - MapBasedSecurityMetadataSource (2)
-- [ ] 6 AOP Method 기반 DB 연동 - MapBasedSecurityMetadataSource (3)
-- [ ] 7 AOP Method 기반 DB 연동 - ProtectPointcutPostProcessor
+### Authorization
+- 당신에게 무엇이 허가 되었는지 증명하는 것. (인가)
 
-#### 섹션 7
+#### 스프링 시큐리티가 지원하는 권한 계층
+- 웹 계층: URL 요청에 따른 메뉴 혹은 화면단위의 레벨 보안
+- 서비스 계층: 화면 단위가 아닌 메소드 같은 기능 단위의 레벨 보안
+- 도메인 계층(ACL, 접근 제어목록): 객체 단위의 레벨 보안
 
-- [ ] 번외편 - 메소드 보안 실시간 DB 연동 구현
-- [ ] ProxyFactory 를 활용한 실시간 메소드 보안 구현
+### FilterSecurityInterceptor
+- 마지막에 위치한 필터로써 인증된 사용자에 대해여 특정 요청의 승인/거부 여부를 최종적으로 결정
+- 인증객체 없이 보호자원에 접근을 시도할 경우 AuthenticationException을 발생
+- 인증 후 자원에 접근 가능한 권한이 존재하지 않을 경우 AccessDeniedException을 발생
+- 권한 제어 방식 중 HTTP 자원의 보안을 처리하는 필터
+- 권한 처리를 AccessDecisionManager에게 맡김.
 
-#### 강좌 마무리
+### AccessDecisionManager
+- 인증정보, 요청정보, 권한정보를 이용해서 사용자의 자원접근을 허용할 것인지 거부할 것인지를 최종 결정하는 주체 
+- 여러개의 voter들을 가질 수 있으며 voter들로부터 접근허용, 거부, 보류에 해당하는 각각의 리터받고 판단 및 결정
+- 최종 접근 거부 시 예외 발생
+- 접근 결정의 세가지 유형
+  - AffirmativeBased: 여러개의 voter 클래스 중 하나라도 접근 허가로 결론을 내면 접근허가로 판단
+  - ConsensusBased: 
+    - 다수표(승인 및 거부)에 의해 최종 결정을 판단한다.
+    - 동수일 경우 기본은 접근허가이나 AllowIfEqualGrantedDeniedDecisions을 false로 설정할 경우 접근 거부로 결정된다.
+  - UnanimousBased: 모든 voter가 만장일치로 접근을 승인해야 하면 그렇지 않은 경우 접근을 거부한다.
 
-- [ ] 정리
+### AccessDecisionVoter
+- 판단을 심사하는 것(위원)
+- Voter가 권한 부여 과정에서 판단하는 자료
+  - Authentication - 인증정보(User)
+  - FilterInvocation - 요청정보(antMatcher("/user"))
+  - ConfigAttributes - 권한정보(hasRole("USER"))
+- 결정방식
+  - ACCESS_GRANTED: 접근 허용(1)
+  - ACCESS_DENIED: 접근 거부(-1)
+  - ACCESS_ABSTAIN: 접근 보류(0)
+    - Voter가 해당 타입의 요청에 대해 결정을 내릴 수 없는 경우
+
+
