@@ -54,3 +54,22 @@ Authentication authentication = SecurityContextHolder.getContext().getAuthentica
 ### AuthenticationManager
 - AuthenticationProvider 목록 중에서 인증 처리 요건에 맞는 AuthenticationProvider를 찾아 인증처리를 위임한다.
 - 부모 ProviderManager를 설정하여 AuthencationProvider를 계속 탐색할 수 있다.
+
+### Authorization
+- 당신에게 무엇이 허가 되었는지 증명하는 것. (인가)
+
+#### 스프링 시큐리티가 지원하는 권한 계층
+- 웹 계층: URL 요청에 따른 메뉴 혹은 화면단위의 레벨 보안
+- 서비스 계층: 화면 단위가 아닌 메소드 같은 기능 단위의 레벨 보안
+- 도메인 계층(ACL, 접근 제어목록): 객체 단위의 레벨 보안
+
+### FilterSecurityInterceptor
+- 마지막에 위치한 필터로써 인증된 사용자에 대해여 특정 요청의 승인/거부 여부를 최종적으로 결정
+- 인증객체 없이 보호자원에 접근을 시도할 경우 AuthenticationException을 발생
+- 인증 후 자원에 접근 가능한 권한이 존재하지 않을 경우 AccessDeniedException을 발생
+- 권한 제어 방식 중 HTTP 자원의 보안을 처리하는 필터
+- 권한 처리를 AccessDecisionManager에게 맡김.
+
+
+
+
