@@ -50,3 +50,7 @@ Authentication authentication = SecurityContextHolder.getContext().getAuthentica
 
 ### Authentication Flow
 ![flow.jpg](flow.jpg)
+
+### AuthenticationManager
+- AuthenticationProvider 목록 중에서 인증 처리 요건에 맞는 AuthenticationProvider를 찾아 인증처리를 위임한다.
+- 부모 ProviderManager를 설정하여 AuthencationProvider를 계속 탐색할 수 있다.

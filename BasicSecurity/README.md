@@ -26,7 +26,7 @@
 - [x] 4 인증 저장소 - SecurityContextHolder, SecurityContext 
 - [x] 5 인증 저장소 필터 - SecurityContextPersistenceFilter
 - [x] 6 인증 흐름 이해 - Authentication Flow
-- [ ] 7 인증 관리자 : AuthenticationManager
+- [x] 7 인증 관리자 : AuthenticationManager
 - [ ] 8인증 처리자 - AuthenticationProvider 
 - [ ] 9 인가 개념 및 필터 이해 : Authorization, FilterSecurityInterceptor
 - [ ] 10 인가 결정 심의자 - AccessDecisionManager, AccessDecisionVoter 
