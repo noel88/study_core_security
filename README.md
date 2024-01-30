@@ -34,7 +34,7 @@
 
 #### 섹션 3
 
-- [ ] 1 실전 프로젝트 생성
+- [x] 1 실전 프로젝트 생성
 - [ ] 2 정적 자원 관리 - WebIgnore 설정
 - [ ] 3 사용자 DB 등록 및 PasswordEncoder
 - [ ] 4 DB 연동 인증 처리(1) : CustomUserDetailsService
