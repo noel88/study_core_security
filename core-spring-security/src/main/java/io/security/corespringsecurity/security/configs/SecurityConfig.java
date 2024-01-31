@@ -15,16 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-        String password = passwordEncoder().encode("1111");
-
-        auth.inMemoryAuthentication().withUser("user").password(password).roles("USER");
-        auth.inMemoryAuthentication().withUser("manager").password(password).roles("MANAGER", "USER");
-        auth.inMemoryAuthentication().withUser("admin").password(password).roles("ADMIN", "MANAGER", "USER");
-    }
-
     @Bean
     protected PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -41,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/user").permitAll()
+                .antMatchers("/", "/users").permitAll()
                 .antMatchers("/mypage").hasRole("USER")
                 .antMatchers("/messages").hasRole("MANAGER")
                 .antMatchers("/config").hasRole("ADMIN")
